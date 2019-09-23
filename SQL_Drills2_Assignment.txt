@@ -1,0 +1,85 @@
+1.
+SELECT DISTINCT(country)
+FROM ksprojects;
+
+2.
+SELECT COUNT(DISTINCT(category)), COUNT(DISTINCT(main_category))
+FROM ksprojects;
+
+Main_category has 15 unique values.
+Category has 158 unique values.
+
+3.
+SELECT main_category, category
+FROM ksprojects
+GROUP BY main_category, category
+ORDER BY main_category;
+
+4.
+SELECT main_category, COUNT(DISTINCT category)
+FROM ksprojects
+GROUP BY main_category
+ORDER BY main_category;
+
+Art has 13 unique categories. 
+Comics has 6 unique categories.
+Crafts has 15 unique categories. 
+Dance has 5 unique categories.
+Design has 7 unique categories. 
+Fashion has 9 unique categories.
+Film and video has 20 unique categories. 
+Food has 13 unique categories.
+Games has 8 unique categories. 
+Journalism has 6 unique categories.
+Music has 18 unique categories. 
+Phot. has 7 unique categories.
+Publ. has 15 unique categories. 
+Tech. has 16 unique categories.
+Theatre has 7 unique categories.
+
+5.
+SELECT main_category, ROUND(AVG(backers), 0) AS avg_backers
+FROM ksprojects
+GROUP BY main_category
+ORDER BY avg_backers DESC;
+
+6.
+SELECT main_category, COUNT(*) AS sucessful_campaigns, AVG(pledged - goal)
+FROM ksprojects
+WHERE state = 'successful'
+GROUP BY main_category;
+
+7.
+SELECT main_category, COUNT(*), MAX(goal)
+FROM ksprojects
+WHERE backers = 0
+GROUP BY main_category;
+
+8.
+SELECT main_category, ROUND(AVG(usd_pledged/NULLIF(backers,0))) AS avg_pledge
+FROM ksprojects
+GROUP BY main_category
+HAVING AVG(usd_pledged/NULLIF(backers,0)) < 50
+ORDER BY avg_pledge DESC;
+
+9.
+SELECT main_category, COUNT(*) AS sucessful_projects
+FROM ksprojects
+WHERE state = 'successful'
+AND backers BETWEEN 5 and 10
+GROUP BY main_category;
+
+10.
+SELECT currency, SUM(pledged)
+FROM ksprojects
+GROUP BY currency
+ORDER by SUM(pledged) DESC;
+
+11.
+SELECT main_category, SUM(backers)
+FROM ksprojects
+WHERE main_category NOT IN ('Games', 'Technology')
+AND state = 'successful'
+GROUP BY main_category
+HAVING SUM(backers) > 100000
+ORDER by main_category;
